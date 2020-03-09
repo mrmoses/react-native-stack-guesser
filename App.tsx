@@ -16,6 +16,7 @@ import {
   View,
   Text,
   StatusBar,
+  Button,
 } from 'react-native';
 
 import {
@@ -25,24 +26,40 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {
+  createStackNavigator,
+  StackNavigationProp,
+} from '@react-navigation/stack';
+
+import QuestionList from './components/QuestionList';
 
 declare var global: {HermesInternal: null | {}};
 
-const Stack = createStackNavigator();
+type RootStackParamList = {
+  Home: undefined;
+  QuestionList: undefined;
+};
+const Stack = createStackNavigator<RootStackParamList>();
 
 const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="QuestionList" component={QuestionList} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-const Home = () => {
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+
+type HomeProps = {
+  navigation: HomeScreenNavigationProp;
+};
+const Home: React.FunctionComponent<HomeProps> = () => {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -57,6 +74,12 @@ const Home = () => {
             </View>
           )}
           <View style={styles.body}>
+            <View style={styles.sectionContainer}>
+              <Button
+                title="View Questions"
+                onPress={() => navigation.navigate('QuestionList')}
+              />
+            </View>
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Step One</Text>
               <Text style={styles.sectionDescription}>
