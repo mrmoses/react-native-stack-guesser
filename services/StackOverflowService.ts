@@ -10,6 +10,13 @@ interface StackOverflowQuestionResponse {
 class StackOverflowService {
   private host: string = 'https://api.stackexchange.com/2.2';
   private siteParam: string = 'stackoverflow';
+  private baseQueryParams = {
+    order: 'desc',
+    sort: 'votes',
+    accepted: 'True',
+    answers: '2',
+    tagged: 'react-native',
+  };
 
   private async getRequest(method: string, params: any) {
     try {
@@ -29,11 +36,20 @@ class StackOverflowService {
   async getQuestions(): Promise<Array<StackOverflowQuestion>> {
     let questionResp: StackOverflowQuestionResponse = await this.getRequest(
       'search/advanced',
+      this.baseQueryParams,
+    );
+
+    return questionResp.items;
+  }
+
+  async searchQuestions(
+    searchText: String,
+  ): Promise<Array<StackOverflowQuestion>> {
+    let questionResp: StackOverflowQuestionResponse = await this.getRequest(
+      'search/advanced',
       {
-        order: 'desc',
-        sort: 'activity',
-        accepted: 'True',
-        answers: '2',
+        ...this.baseQueryParams,
+        title: searchText,
       },
     );
 
