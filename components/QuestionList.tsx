@@ -1,14 +1,35 @@
 import React, {Component} from 'react';
-import {FlatList, StyleSheet, Text, View, TextInput} from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import StackOverflowService, {
   StackOverflowQuestion,
 } from '../services/StackOverflowService';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from 'navigation/RootNav';
+
+type QuestionListNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'QuestionList'
+>;
+
+type QuestionListProps = {
+  navigation: QuestionListNavigationProp;
+};
 
 interface QuestionListState {
   questions: Array<StackOverflowQuestion>;
 }
 
-export default class QuestionList extends Component<{}, QuestionListState> {
+export default class QuestionList extends Component<
+  QuestionListProps,
+  QuestionListState
+> {
   state = {
     questions: [],
   };
@@ -42,7 +63,16 @@ export default class QuestionList extends Component<{}, QuestionListState> {
         />
         <FlatList<StackOverflowQuestion>
           data={this.state.questions}
-          renderItem={({item}) => <Text style={styles.item}>{item.title}</Text>}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate('QuestionDetail', {
+                  questionId: item.question_id,
+                })
+              }>
+              <Text style={styles.item}>{item.title}</Text>
+            </TouchableOpacity>
+          )}
           keyExtractor={item => item.question_id.toString()}
         />
       </View>

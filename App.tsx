@@ -1,13 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React from 'react';
 import {
   SafeAreaView,
@@ -32,22 +22,23 @@ import {
   StackNavigationProp,
 } from '@react-navigation/stack';
 
+import {RootStackParamList} from 'navigation/RootNav';
 import QuestionList from './components/QuestionList';
+import QuestionDetail from './components/QuestionDetail';
 
 declare var global: {HermesInternal: null | {}};
 
-type RootStackParamList = {
-  Home: undefined;
-  QuestionList: undefined;
-};
 const Stack = createStackNavigator<RootStackParamList>();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Navigator
+        initialRouteName="QuestionList"
+        screenOptions={{headerShown: false}}>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="QuestionList" component={QuestionList} />
+        <Stack.Screen name="QuestionDetail" component={QuestionDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );
