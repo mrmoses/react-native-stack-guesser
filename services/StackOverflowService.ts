@@ -26,7 +26,7 @@ class StackOverflowService {
     tagged: 'react-native',
   };
 
-  private async getRequest(method: string, params: any) {
+  private questionCache: Array<StackOverflowQuestion> = [];
 
   private async getRequest(method: string, params?: any) {
     try {
@@ -53,7 +53,12 @@ class StackOverflowService {
       this.baseQuestionSearchQueryParams,
     );
 
-    return questionResp.items;
+    this.questionCache = questionResp.items;
+    return this.questionCache;
+  }
+
+  getQuestion(questionId: string): StackOverflowQuestion | undefined {
+    return this.questionCache.find(q => q.question_id === questionId);
   }
 
   async searchQuestions(

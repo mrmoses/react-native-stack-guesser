@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
 import StackOverflowService, {
   StackOverflowAnswer,
+  StackOverflowQuestion,
 } from '../services/StackOverflowService';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
@@ -19,6 +20,8 @@ type QuestionDetailProps = {
 };
 
 interface QuestionDetailState {
+  questionId: string;
+  question: StackOverflowQuestion | undefined;
   answers: Array<StackOverflowAnswer>;
 }
 
@@ -27,6 +30,8 @@ export default class QuestionDetail extends Component<
   QuestionDetailState
 > {
   state = {
+    questionId: this.props.route.params.questionId,
+    question: {title: '', body: ''} as StackOverflowQuestion,
     answers: [],
   };
 
@@ -36,8 +41,9 @@ export default class QuestionDetail extends Component<
 
   async fetchData() {
     this.setState({
+      question: StackOverflowService.getQuestion(this.state.questionId),
       answers: await StackOverflowService.getQuestionAnswers(
-        this.props.route.params.questionId,
+        this.state.questionId,
       ),
     });
   }
@@ -45,17 +51,22 @@ export default class QuestionDetail extends Component<
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.item}>Detail View</Text>
-        <FlatList<StackOverflowAnswer>
-          data={this.state.answers}
-          renderItem={({item}) => (
-            <TouchableOpacity
-              onPress={() => console.log('answer picked', item.answer_id)}>
-              <Text style={styles.item}>{item.body}</Text>
-            </TouchableOpacity>
-          )}
-          keyExtractor={item => item.answer_id.toString()}
-        />
+        <View style={styles.container}>
+          <Text style={styles.item}>{this.state.question.title}</Text>
+          <Text style={styles.item}>{this.state.question.body}</Text>
+        </View>
+        <View style={styles.container}>
+          <FlatList<StackOverflowAnswer>
+            data={this.state.answers}
+            renderItem={({item}) => (
+              <TouchableOpacity
+                onPress={() => console.log('answer picked', item.answer_id)}>
+                <Text style={styles.item}>{item.body}</Text>
+              </TouchableOpacity>
+            )}
+            keyExtractor={item => item.answer_id.toString()}
+          />
+        </View>
       </View>
     );
   }
