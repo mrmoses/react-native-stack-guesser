@@ -1,6 +1,7 @@
 export interface StackOverflowQuestion {
   question_id: string;
   title: string;
+  body: string;
 }
 export interface StackOverflowAnswer {
   answer_id: string;
@@ -26,9 +27,15 @@ class StackOverflowService {
   };
 
   private async getRequest(method: string, params: any) {
+
+  private async getRequest(method: string, params?: any) {
     try {
       let fullUrl = `${this.host}/${method}`;
+
+      params = params || {};
       params.site = this.siteParam;
+      params.filter = 'withbody';
+
       fullUrl += '?' + this.createQueryString(params);
 
       let response = await fetch(fullUrl);
@@ -68,7 +75,6 @@ class StackOverflowService {
   ): Promise<Array<StackOverflowAnswer>> {
     let answerResp: StackOverflowAnswerResponse = await this.getRequest(
       `questions/${questionId}/answers`,
-      {filter: 'withbody'},
     );
 
     return answerResp.items;
