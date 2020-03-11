@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import {
   FlatList,
   StyleSheet,
-  Text,
   View,
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import HTML from 'react-native-render-html';
 import StackOverflowService, {
   StackOverflowQuestion,
 } from '../services/StackOverflowService';
@@ -70,7 +70,9 @@ export default class QuestionList extends Component<
                   questionId: item.question_id,
                 })
               }>
-              <Text style={styles.item}>{item.title}</Text>
+              <View style={styles.item}>
+                <HTML html={item.title} baseFontStyle={styles.item} />
+              </View>
             </TouchableOpacity>
           )}
           keyExtractor={item => item.question_id.toString()}
@@ -88,7 +90,6 @@ const styles = StyleSheet.create({
   item: {
     padding: 10,
     fontSize: 18,
-    height: 44,
   },
   searchInput: {
     height: 40,

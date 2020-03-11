@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import HTML from 'react-native-render-html';
 import StackOverflowService, {
   StackOverflowAnswer,
   StackOverflowQuestion,
@@ -52,16 +59,27 @@ export default class QuestionDetail extends Component<
     return (
       <View style={styles.container}>
         <View style={styles.container}>
-          <Text style={styles.item}>{this.state.question.title}</Text>
-          <Text style={styles.item}>{this.state.question.body}</Text>
+          {this.state.question.title ? (
+            <HTML
+              html={this.state.question.title}
+              baseFontStyle={styles.item}
+            />
+          ) : null}
         </View>
+        <ScrollView style={styles.container}>
+          {this.state.question.body ? (
+            <HTML html={this.state.question.body} baseFontStyle={styles.item} />
+          ) : null}
+        </ScrollView>
         <View style={styles.container}>
           <FlatList<StackOverflowAnswer>
             data={this.state.answers}
             renderItem={({item}) => (
               <TouchableOpacity
                 onPress={() => console.log('answer picked', item.answer_id)}>
-                <Text style={styles.item}>{item.body}</Text>
+                {item.body ? (
+                  <HTML html={item.body} baseFontStyle={styles.item} />
+                ) : null}
               </TouchableOpacity>
             )}
             keyExtractor={item => item.answer_id.toString()}
@@ -80,7 +98,6 @@ const styles = StyleSheet.create({
   item: {
     padding: 10,
     fontSize: 18,
-    height: 44,
   },
   searchInput: {
     height: 40,
