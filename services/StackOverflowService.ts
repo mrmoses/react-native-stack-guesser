@@ -2,15 +2,22 @@ export interface StackOverflowQuestion {
   question_id: string;
   title: string;
 }
+export interface StackOverflowAnswer {
+  answer_id: string;
+  body: string;
+}
 
 interface StackOverflowQuestionResponse {
   items: StackOverflowQuestion[];
+}
+interface StackOverflowAnswerResponse {
+  items: StackOverflowAnswer[];
 }
 
 class StackOverflowService {
   private host: string = 'https://api.stackexchange.com/2.2';
   private siteParam: string = 'stackoverflow';
-  private baseQueryParams = {
+  private baseQuestionSearchQueryParams = {
     order: 'desc',
     sort: 'votes',
     accepted: 'True',
@@ -36,7 +43,7 @@ class StackOverflowService {
   async getQuestions(): Promise<Array<StackOverflowQuestion>> {
     let questionResp: StackOverflowQuestionResponse = await this.getRequest(
       'search/advanced',
-      this.baseQueryParams,
+      this.baseQuestionSearchQueryParams,
     );
 
     return questionResp.items;
@@ -48,12 +55,23 @@ class StackOverflowService {
     let questionResp: StackOverflowQuestionResponse = await this.getRequest(
       'search/advanced',
       {
-        ...this.baseQueryParams,
+        ...this.baseQuestionSearchQueryParams,
         title: searchText,
       },
     );
 
     return questionResp.items;
+  }
+
+  async getQuestionAnswers(
+    questionId: string,
+  ): Promise<Array<StackOverflowAnswer>> {
+    let answerResp: StackOverflowAnswerResponse = await this.getRequest(
+      `questions/${questionId}/answers`,
+      {filter: 'withbody'},
+    );
+
+    return answerResp.items;
   }
 
   private createQueryString(parameters: any) {
