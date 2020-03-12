@@ -6,6 +6,7 @@ export interface StackOverflowQuestion {
 export interface StackOverflowAnswer {
   answer_id: string;
   body: string;
+  is_accepted: boolean;
 }
 
 interface StackOverflowQuestionResponse {
