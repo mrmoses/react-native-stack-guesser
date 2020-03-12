@@ -53,7 +53,7 @@ export default class QuestionList extends Component<
     return (
       <View style={styles.container}>
         <TextInput
-          style={[styles.searchInput, styles.item]}
+          style={styles.searchInput}
           placeholder="Search"
           clearButtonMode="always"
           enablesReturnKeyAutomatically={true}
@@ -85,13 +85,16 @@ export default class QuestionList extends Component<
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22,
   },
   item: {
-    padding: 10,
+    padding: 14,
     fontSize: 18,
   },
   searchInput: {
+    padding: 10,
+    fontSize: 18,
     height: 40,
+    borderBottomColor: '#000000',
+    borderBottomWidth: 1,
   },
 });

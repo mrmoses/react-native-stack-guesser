@@ -5,6 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
+  Text,
 } from 'react-native';
 import HTML from 'react-native-render-html';
 import StackOverflowService, {
@@ -58,25 +59,32 @@ export default class QuestionDetail extends Component<
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.container}>
+        <View style={styles.questionHeaderContainer}>
+          <Text style={styles.label}>Question</Text>
           {this.state.question.title ? (
             <HTML
               html={this.state.question.title}
-              baseFontStyle={styles.item}
+              baseFontStyle={styles.questionTitle}
             />
           ) : null}
+          <ScrollView style={styles.questionBodyContainer}>
+            {this.state.question.body ? (
+              <HTML
+                html={this.state.question.body}
+                baseFontStyle={styles.questionBody}
+              />
+            ) : null}
+          </ScrollView>
         </View>
-        <ScrollView style={styles.container}>
-          {this.state.question.body ? (
-            <HTML html={this.state.question.body} baseFontStyle={styles.item} />
-          ) : null}
-        </ScrollView>
-        <View style={styles.container}>
+        <View style={styles.questionAnswerContainer}>
+          <Text style={styles.answersHeader}>Answers</Text>
           <FlatList<StackOverflowAnswer>
             data={this.state.answers}
-            renderItem={({item}) => (
+            renderItem={({item, index}) => (
               <TouchableOpacity
+                style={styles.answerItem}
                 onPress={() => console.log('answer picked', item.answer_id)}>
+                <Text style={styles.label}>Answer {index + 1}</Text>
                 {item.body ? (
                   <HTML html={item.body} baseFontStyle={styles.item} />
                 ) : null}
@@ -93,7 +101,47 @@ export default class QuestionDetail extends Component<
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22,
+  },
+  questionHeaderContainer: {
+    flex: 1,
+    paddingTop: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderBottomColor: '#000000',
+    borderBottomWidth: 2,
+  },
+  label: {
+    fontSize: 14,
+    color: '#888888',
+  },
+  questionTitle: {
+    fontSize: 22,
+  },
+  questionBodyContainer: {
+    marginTop: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderTopColor: '#BBBBBB',
+    borderTopWidth: 1,
+  },
+  questionBody: {
+    fontSize: 18,
+  },
+
+  questionAnswerContainer: {
+    flex: 2,
+  },
+  answersHeader: {
+    fontSize: 16,
+    textAlign: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
+  },
+  answerItem: {
+    padding: 10,
+    paddingTop: 40,
+    borderBottomColor: '#000000',
+    borderBottomWidth: 1,
   },
   item: {
     padding: 10,
