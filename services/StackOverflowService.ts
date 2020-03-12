@@ -72,7 +72,8 @@ class StackOverflowService {
       },
     );
 
-    return questionResp.items;
+    this.questionCache = questionResp.items;
+    return this.questionCache;
   }
 
   async getQuestionAnswers(
