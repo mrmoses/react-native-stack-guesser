@@ -7,6 +7,8 @@ The list of questions is searchable, but is limited to React Native (tagged) que
 
 The answers for a question are displayed in a random order every time the question is viewed.
 
+The StackExchange API has rate limiting and will throttle usage by IP.
+
 ## Development
 **Requirements:** Setup a [React Native development environment](https://reactnative.dev/docs/getting-startedc) and have an emulator running, or device connected.  
 ```
