@@ -7,10 +7,10 @@ The list of questions is searchable, but is limited to React Native (tagged) que
 
 The answers for a question are displayed in a random order every time the question is viewed.
 
-The StackExchange API has rate limiting and will throttle usage by IP.
+The StackExchange API has rate limiting and will [throttle usage by IP](https://api.stackexchange.com/docs/throttle).
 
 ## Development
-**Requirements:** Setup a [React Native development environment](https://reactnative.dev/docs/getting-startedc) and have an emulator running, or device connected.  
+**Requirements:** Setup a [React Native development environment](https://reactnative.dev/docs/getting-started) and have an emulator running, or device connected.  
 ```
 npx react-native run-android
 ```
