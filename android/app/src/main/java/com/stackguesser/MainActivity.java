@@ -1,4 +1,4 @@
-package com.stackguesser;
+package com.webratory.stackguesserv1;
 
 import com.facebook.react.ReactActivity;
 
